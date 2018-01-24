@@ -5,13 +5,14 @@ import javax.websocket.Session;
 import cc.wheatup.util.Util;
 
 public class User {
+	private static long CURRENT_USID = 0L;
 	public Session session;
 	public long uuid = 0;
 	
 	public User(Session session){
 		this.session = session;
-		this.uuid = Server.CURRENT_USID;
-		Server.CURRENT_USID++;
+		this.uuid = CURRENT_USID;
+		CURRENT_USID++;
 	}
 	
 	public void send(Pack pack){

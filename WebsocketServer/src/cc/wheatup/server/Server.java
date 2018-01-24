@@ -16,13 +16,14 @@ import cc.wheatup.util.Util;
 public class Server {
 	private static TaskHandler currentHandler;
 	public static String version = "Test";
-	public static long CURRENT_USID = 0L;
 	private static Map<Session, User> userMap;
 	private static boolean isOpen = false;
 	
 	@OnOpen
 	public void onOpen(Session session)
 	{
+		User user = new User(session);
+		userMap.put(session, user);
 		if(currentHandler != null) {
 			Task task = Task.createTask(session, TaskType.OPEN);
 			currentHandler.addTask(task);
@@ -42,6 +43,7 @@ public class Server {
 			Task task = Task.createTask(session, TaskType.CLOSE);
 			currentHandler.addTask(task);
 		}
+		userMap.remove(session);
 	}
 	
 	@OnMessage
