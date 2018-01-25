@@ -51,7 +51,7 @@ public class Server {
 	{
 		if(currentHandler != null) {
 			String decodedMessage = Util.decode(message);
-			System.out.println("message: " + decodedMessage);
+			//System.out.println("message: " + decodedMessage);
 			Task task = Task.createTask(session, decodedMessage);
 			currentHandler.addTask(task);
 		}
