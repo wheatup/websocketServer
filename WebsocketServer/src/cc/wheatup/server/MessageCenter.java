@@ -6,13 +6,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import cc.wheatup.util.Util;
 
-public abstract class TaskHandler extends Thread {
+public abstract class MessageCenter extends Thread {
 	protected boolean running = false;
 	protected Queue<Task> tasks;
 	protected static final int QUEUE_SIZE = 2048;
 	protected static final int SLEEP_TIME = 1;
 	
-	public TaskHandler(){
+	public MessageCenter(){
 		this.tasks = new ArrayBlockingQueue<Task>(QUEUE_SIZE);
 	}
 	

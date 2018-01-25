@@ -6,8 +6,8 @@ public class Task {
 	public User user;
 	public String message;
 	public TaskType type;
-	private Task(User player, String message){
-		this.user = player;
+	private Task(User user, String message){
+		this.user = user;
 		this.message = message;
 		this.type = TaskType.MESSAGE;
 	}

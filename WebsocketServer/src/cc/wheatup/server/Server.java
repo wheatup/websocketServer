@@ -14,7 +14,7 @@ import cc.wheatup.util.Util;
 
 @ServerEndpoint("/server")
 public class Server {
-	private static TaskHandler currentHandler;
+	private static MessageCenter currentHandler;
 	public static String version = "Test";
 	private static Map<Session, User> userMap;
 	private static boolean isOpen = false;
@@ -57,7 +57,7 @@ public class Server {
 		}
 	}
 	
-	public static void start(TaskHandler handler) {
+	public static void start(MessageCenter handler) {
 		userMap = new HashMap<Session, User>();
 		
 		currentHandler = handler;
