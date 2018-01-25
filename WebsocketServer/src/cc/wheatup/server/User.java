@@ -19,7 +19,7 @@ public class User {
 		try{
 			String text = pack.toJSON().toString();
 			String encodeText = Util.encode(text);
-			session.getAsyncRemote().sendText(encodeText);
+			session.getBasicRemote().sendText(encodeText);
 		}catch(Exception e){
 			
 		}

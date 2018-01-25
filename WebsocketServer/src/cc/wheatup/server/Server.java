@@ -1,5 +1,6 @@
 package cc.wheatup.server;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,7 @@ public class Server {
 	private static boolean isOpen = false;
 	
 	@OnOpen
-	public void onOpen(Session session)
-	{
+	public void onOpen(Session session){
 		User user = new User(session);
 		userMap.put(session, user);
 		if(currentHandler != null) {
@@ -31,24 +31,26 @@ public class Server {
 	}
 	
 	@OnError
-	public void onError(Throwable e)
-	{
-		e.printStackTrace();
+	public void onError(Throwable e){
+		//e.printStackTrace();
 	}
 	
 	@OnClose
-	public void onClose(Session session)
-	{
+	public void onClose(Session session){
 		if(currentHandler != null) {
 			Task task = Task.createTask(session, TaskType.CLOSE);
 			currentHandler.addTask(task);
 		}
 		userMap.remove(session);
+		try {
+			session.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@OnMessage
-	public void onMessage(String message, Session session)
-	{
+	public void onMessage(String message, Session session){
 		if(currentHandler != null) {
 			String decodedMessage = Util.decode(message);
 			//System.out.println("message: " + decodedMessage);
