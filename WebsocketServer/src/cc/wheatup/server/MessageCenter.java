@@ -76,6 +76,10 @@ public abstract class MessageCenter extends Thread {
 		}
 	}
 	
+	public boolean isRunning() {
+		return running;
+	}
+	
 	public abstract void onUserConnected(User user);
 	public abstract void onUserDisconnected(User user);
 	public abstract void handleMessage(User user, String type, Map<String, Object> map);

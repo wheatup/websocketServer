@@ -16,12 +16,13 @@ import cc.wheatup.util.Util;
 @ServerEndpoint("/server")
 public class Server {
 	private static MessageCenter currentHandler;
-	public static String version = "Test";
 	private static Map<Session, User> userMap;
-	private static boolean isOpen = false;
+	private static boolean running = false;
 	
 	@OnOpen
 	public void onOpen(Session session){
+		if(!running) return;
+		
 		User user = new User(session);
 		userMap.put(session, user);
 		if(currentHandler != null) {
@@ -37,6 +38,8 @@ public class Server {
 	
 	@OnClose
 	public void onClose(Session session){
+		if(!running) return;
+		
 		if(currentHandler != null) {
 			Task task = Task.createTask(session, TaskType.CLOSE);
 			currentHandler.addTask(task);
@@ -51,6 +54,8 @@ public class Server {
 	
 	@OnMessage
 	public void onMessage(String message, Session session){
+		if(!running) return;
+		
 		if(currentHandler != null) {
 			String decodedMessage = Util.decode(message);
 			//System.out.println("message: " + decodedMessage);
@@ -64,15 +69,18 @@ public class Server {
 		
 		currentHandler = handler;
 		currentHandler.start();
-		isOpen = true;
+		running = true;
 	}
 	
 	public static void stop() {
-		isOpen = false;
+		running = false;
+		if(currentHandler != null) {
+			currentHandler.shutdown();
+		}
 	}
 	
-	public static boolean isOpen() {
-		return isOpen;
+	public static boolean isRunning() {
+		return running;
 	}
 	
 	public static User getUser(Session session) {
